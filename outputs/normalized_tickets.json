@@ -1,0 +1,56 @@
+[
+  {
+    "ticket_id": "T-1001",
+    "customer_tier": "VIP",
+    "channel": "email",
+    "subject": "Card deposit failed",
+    "message": "My card deposit was declined twice today. Please help me fund my account.",
+    "combined_text": "Card deposit failed\nMy card deposit was declined twice today. Please help me fund my account.",
+    "message_word_count": 13
+  },
+  {
+    "ticket_id": "T-1002",
+    "customer_tier": "standard",
+    "channel": "Chat",
+    "subject": "Cannot log in",
+    "message": "I reset my password but the new password is not accepted when I try to sign in.",
+    "combined_text": "Cannot log in\nI reset my password but the new password is not accepted when I try to sign in.",
+    "message_word_count": 17
+  },
+  {
+    "ticket_id": "T-1003",
+    "customer_tier": "premium",
+    "channel": "web_form",
+    "subject": "Unrecognized withdrawal",
+    "message": "I did not make this withdrawal and think someone may have accessed my account. Please freeze it urgently.",
+    "combined_text": "Unrecognized withdrawal\nI did not make this withdrawal and think someone may have accessed my account. Please freeze it urgently.",
+    "message_word_count": 18
+  },
+  {
+    "ticket_id": "T-1004",
+    "customer_tier": "Standard",
+    "channel": "phone",
+    "subject": "Payment still pending",
+    "message": "The payment has been pending since yesterday. Can you confirm whether it went through?",
+    "combined_text": "Payment still pending\nThe payment has been pending since yesterday. Can you confirm whether it went through?",
+    "message_word_count": 14
+  },
+  {
+    "ticket_id": "T-1005",
+    "customer_tier": "enterprise",
+    "channel": "EMAIL",
+    "subject": "Account access after device change",
+    "message": "I changed phones and now the verification code is not arriving, so I cannot access my account.",
+    "combined_text": "Account access after device change\nI changed phones and now the verification code is not arriving, so I cannot access my account.",
+    "message_word_count": 17
+  },
+  {
+    "ticket_id": "T-1006",
+    "customer_tier": "standard",
+    "channel": "social",
+    "subject": "Refund request",
+    "message": "Please let me know how I can request a refund for the duplicate charge on my account.",
+    "combined_text": "Refund request\nPlease let me know how I can request a refund for the duplicate charge on my account.",
+    "message_word_count": 17
+  }
+]

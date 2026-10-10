@@ -1,0 +1,53 @@
+[
+  {
+    "ticket_id": "T-1001",
+    "customer_tier": " VIP ",
+    "channel": "email",
+    "subject": "Card deposit failed",
+    "message": "  My card deposit was declined twice today. Please help me fund my account.  ",
+    "created_at": "2026-10-09T09:15:00Z",
+    "legacy_status": "new"
+  },
+  {
+    "ticket_id": "T-1002",
+    "customer_tier": "standard",
+    "channel": " Chat ",
+    "subject": "Cannot log in",
+    "message": "I reset my password but the new password is not accepted when I try to sign in.",
+    "created_at": "2026-10-09T09:22:00Z"
+  },
+  {
+    "ticket_id": "T-1003",
+    "customer_tier": "premium",
+    "channel": "web_form",
+    "subject": "Unrecognized withdrawal",
+    "message": "I did not make this withdrawal and think someone may have accessed my account. Please freeze it urgently.",
+    "created_at": "2026-10-09T10:03:00Z",
+    "tags": ["security", "urgent"]
+  },
+  {
+    "ticket_id": "T-1004",
+    "customer_tier": " Standard ",
+    "channel": "phone",
+    "subject": "Payment still pending",
+    "message": "The payment has been pending since yesterday. Can you confirm whether it went through?",
+    "created_at": "2026-10-09T11:40:00Z"
+  },
+  {
+    "ticket_id": "T-1005",
+    "customer_tier": "enterprise",
+    "channel": "EMAIL",
+    "subject": "Account access after device change",
+    "message": "I changed phones and now the verification code is not arriving, so I cannot access my account.",
+    "created_at": "2026-10-09T12:18:00Z",
+    "department": "customer_success"
+  },
+  {
+    "ticket_id": "T-1006",
+    "customer_tier": "standard",
+    "channel": "social",
+    "subject": "Refund request",
+    "message": "Please let me know how I can request a refund for the duplicate charge on my account.",
+    "created_at": "2026-10-09T13:07:00Z"
+  }
+]

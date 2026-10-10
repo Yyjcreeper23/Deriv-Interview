@@ -1,0 +1,50 @@
+{
+    "allowed_issue_types": [
+        "payment_issue",
+        "login_access",
+        "account_security",
+        "withdrawal_issue",
+        "product_how_to",
+        "other"
+    ],
+    "allowed_priorities": ["P1", "P2", "P3"],
+    "allowed_queues": [
+        "billing_ops",
+        "trust_safety",
+        "account_support",
+        "operations",
+        "general_support"
+    ],
+    "routing_matrix": [
+        {
+            "issue_type": "payment_issue",
+            "route_to": "billing_ops"
+        },
+        {
+            "issue_type": "login_access",
+            "route_to": "account_support"
+        },
+        {
+            "issue_type": "account_security",
+            "route_to": "trust_safety"
+        },
+        {
+            "issue_type": "withdrawal_issue",
+            "route_to": "operations"
+        },
+        {
+            "issue_type": "product_how_to",
+            "route_to": "general_support"
+        },
+        {
+            "issue_type": "other",
+            "route_to": "general_support"
+        }
+    ],
+    "priority_rules": {
+        "security_keywords": ["password_reset", "phishing", "compromised", "unauthorised", "unauthorized", "locked_out"],
+        "urgent_channels": ["chat"],
+        "vip_boost": true,
+        "base_priority": "P3"
+    }
+}
