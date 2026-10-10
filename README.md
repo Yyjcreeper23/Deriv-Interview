@@ -1,4 +1,70 @@
-# Support-triage priority policy
+# Support-triage pipeline
+
+This tool reads raw customer-support tickets from `tickets.json`, normalizes and validates them, classifies each ticket into the controlled taxonomy from `routing_rules.json`, assigns a deterministic priority, drafts a safe agent reply, pauses for operator review, and produces the final routed work queue.
+
+It is designed for replayable, auditable support operations: each major stage writes an artifact, routing is derived from code and the routing matrix, operator overrides are preserved, review heuristics are explicit, and live LLM calls are recorded in `llm_calls.jsonl`.
+
+The pipeline stages are:
+
+`INIT` → `INPUTS_LOADED` → `TICKETS_NORMALISED` → `STAGE1_CLASSIFIED` → `PRIORITISED_ASSIGNED` → `DRAFT_REPLIES_GENERATED` → `OPERATOR_REVIEW_COMPLETE` → `FINAL_ROUTING_APPLIED` → `OPTIONAL_OUTPUTS_GENERATED` → `VALIDATION_COMPLETE` → `RESULTS_FINALISED`
+
+Run the pipeline with:
+
+```powershell
+python .\support_triage.py
+```
+
+For a complete artifact and policy check after a run:
+
+```powershell
+python .\validate.py
+```
+
+## Design specifications
+
+### Purpose and operating model
+
+The tool is a file-based, replayable support-triage pipeline. It separates probabilistic language-model work from deterministic control logic:
+
+- LLMs classify tickets, draft replies, and write the P1 escalation summary.
+- Python code owns normalization, schema validation, priority assignment, review flags, operator overrides, routing, artifact creation, and final validation.
+- Each run is inspectable from its JSON, Markdown, CSV, manifest, and JSONL artifacts.
+
+### Inputs
+
+- `tickets.json`: a JSON array of raw ticket objects. Extra source fields are allowed and ignored by normalization.
+- `routing_rules.json`: controlled issue types, priorities, queues, routing matrix, and priority rules.
+- Optional replay fixtures: Stage 1 classifications, Stage 2 replies, escalation Markdown, or an approved operator-review file.
+
+### Stage contracts
+
+| Stage | Contract |
+| --- | --- |
+| Input loading | Read both input files from disk and validate their top-level shapes. |
+| Normalization | Produce one stable record per ticket with the required normalized fields and word count before any LLM call. |
+| Stage 1 classification | Make one batch LLM call; return exactly one controlled issue type and classification record per normalized ticket. |
+| Priority assignment | Apply the configured base, security, urgent-channel, and VIP rules in that order; cap to `allowed_priorities`. |
+| Review heuristic | Emit deterministic `review_flags.json` for short reasons, `other`, P1, and money-plus-security cases. |
+| Stage 2 drafting | Make one separate LLM call per ticket and save strict JSON reply outputs. |
+| Operator review | Display the proposed queue, pause for review, validate `issue_type`/`priority` overrides, and persist them. |
+| Final routing | Look up the post-override issue type exactly once in `routing_matrix`; reject missing, duplicate, or unsupported routes. |
+| Optional outputs | Generate the P1 escalation summary and CSV output. |
+| Validation/finalization | Verify artifacts, controlled values, input hashes, call logs, and final routing before marking results final. |
+
+### Required invariants
+
+1. Final routing cannot run until normalization, Stage 1 classification, priority assignment, Stage 2 drafting, and operator review complete.
+2. Every normalized ticket has exactly one classification, priority, draft reply, review flag, and final assignment.
+3. No issue type, priority, or queue may be invented outside `routing_rules.json`.
+4. Final assignments use post-override values, not the original model output.
+5. A live Stage 2 call is made independently for every ticket; calls are not batched.
+6. Every live LLM call is auditable in `llm_calls.jsonl` with a timestamp, model, prompt hash, input artifacts, and output artifact.
+
+### Artifact layout
+
+All generated artifacts are written under the configured output directory, `outputs/` by default. The key handoff artifacts are `normalized_tickets.json`, `ticket_classification.json`, `ticket_priorities.json`, `review_flags.json`, `draft_replies.json`, `operator_overrides.json`, `final_queue_assignments.json`, `escalation_summary.md`, and `pipeline_manifest.json`.
+
+## Deterministic priority policy
 
 Priority assignment is deterministic and is performed in code from the `priority_rules` and `allowed_priorities` values in `routing_rules.json`. The allowed-priority list is ordered from highest priority to lowest priority, so the configured base priority is raised by moving toward index `0`.
 
